@@ -1,0 +1,367 @@
+﻿@page
+@model IndexModel
+@using System.Linq
+@using System.Collections;
+@using System.Collections.Generic;
+
+@{
+    ViewData["Title"] = "Home page";    
+
+    Random rnd = new Random();
+    int[] num = new int[9]
+    {
+        rnd.Next(6, 49),
+        rnd.Next(6, 49),
+        rnd.Next(6, 49),
+        rnd.Next(6, 49),
+        rnd.Next(6, 49),
+        rnd.Next(6, 49),
+        rnd.Next(6, 49),
+        rnd.Next(6, 49),
+        rnd.Next(6, 49)
+    };
+
+    cheknum();
+
+    void cheknum()
+    {
+        for (var i = 0; i < 9; i++)
+        {
+            for (var l = 0; l < 9; l++)
+            {
+                var a = num[i];
+                var b = num[l]; 
+            
+                if (a == b && i != l)                        
+                {
+                    num[i] = rnd.Next(6, 49);  
+                }                    
+            }   
+        } 
+    }
+    
+    
+    
+
+    var num1 = num[0];
+    var num2 = num[1];
+    var num3 = num[2];
+    var num4 = num[3];
+    var num5 = num[4];
+    var num6 = num[5];
+    var num7 = num[6];
+    var num8 = num[7];
+    var num9 = num[8];
+
+    
+
+    //var num1 = 7;
+    //var num2 = 9;
+    //var num3 = 16;
+    //var num4 = 23;
+    //var num5 = 27;
+    //var num6 = 34;
+    //var num7 = 45;
+    //var num8 = 38;
+    //var num9 = 47;
+    
+    
+
+    int[][] r1 = Enumerable.Range(1,28)
+                      .Select(i => new int[6])
+                      .ToArray();
+
+     var r = new int[28][];
+    for (int i=0; i<28; i++)
+    {
+        r[i] = new int[6];
+    }
+    int[][] dataArray = Enumerable.Range(1,7)
+                      .Select(i => new int[6])
+                      .ToArray();
+    
+    int[][] _dataArray = Enumerable.Range(1,28)
+                      .Select(i => new int[6])
+                      .ToArray();
+    int[][] __dataArray = Enumerable.Range(1,84)
+                      .Select(i => new int[6])
+                      .ToArray();
+
+    int[] c = new int[6]{ 0, 0, 0, 0, 0, 0}; 
+    int[] def = new int[6]{ 0, 0, 0, 0, 0, 0};
+    int[] intArray = new int[6]{ 0, 0, 0, 0, 0, 0};
+    int[] c2 = Array.Empty<int>();
+    int[] c3 = Enumerable.Empty<int>().ToArray();
+    int[] array = Array.Empty<int>();
+       
+
+    GetComb();
+    GetComb2();
+    GetComb3();
+
+void GetComb()
+{
+    for (int i = 0; i < c.Length; i++)
+    { 
+        List<int> _list = new List<int>();
+        _list.Add(num1);
+        _list.Add(num2);
+        _list.Add(num3);
+        _list.Add(num4);
+        _list.Add(num5);
+        _list.Add(num6);
+        
+        if (checkEquality(dataArray[0], def))
+        {
+            int[] intArray = _list.ToArray();
+            Array.Copy(intArray, c, 6);            
+            Array.Copy(intArray, dataArray[0], 6);
+            
+        }
+        
+        for (var j = 0; j < c.Length; j++)
+        {
+            int[] intArray = _list.ToArray();
+            Array.Copy(intArray, c, 6);
+            c.SetValue( num7, j );
+            Array.Copy(c, dataArray[j+1], 6);  
+            Array.Sort(dataArray[j+1]);  
+        }             
+    } 
+    Sort<int>(dataArray, 5);
+    Sort<int>(dataArray, 4);
+    Sort<int>(dataArray, 3);
+    Sort<int>(dataArray, 2);
+    Sort<int>(dataArray, 1);
+    Sort<int>(dataArray, 0);
+}
+
+
+bool checkEquality<T>(T[] first, T[] second)
+{
+    if (ReferenceEquals(first, second)) {
+        return true;
+    }
+ 
+    if (first == null || second == null || (first.Length != second.Length)) {
+        return false;
+    }
+ 
+    EqualityComparer<T> comparer = EqualityComparer<T>.Default;
+    for (int i = 0; i < first.Length; i++)
+    {
+        if (!comparer.Equals(first[i], second[i])) {
+            return false;
+        }
+    }
+ 
+    return true;
+}
+void GetComb2()
+{
+    GetComb();
+    var arr = 0;
+        for (var v = 0; v < 28; v++)
+        {            
+            if (v <= 6)
+        {
+            Array.Copy(dataArray[arr], _dataArray[arr], 6);
+            Array.Sort(_dataArray[arr]);
+            arr++;
+        }
+        else
+        {  
+            for (var i = 0; i < 7; i++)
+            {
+                for (var j = 0; j < 6; j++)
+                {
+                    Array.Copy(_dataArray[i], c, 6);
+                    c.SetValue( num8, j );
+                    Array.Sort(c);
+                    for (var l = 0; l < 28; l++)
+                    {                        
+                        if (checkEquality(c, _dataArray[l]))                        
+                        {                                
+                                goto next;   
+                        }                    
+                    }        
+                    Array.Copy(c, _dataArray[arr], 6);  
+                    Array.Sort(_dataArray[arr]);
+                        arr++;
+                    next:;
+                        
+                    }     
+            }
+                
+        }
+    }
+    Sort<int>(_dataArray, 5);
+    Sort<int>(_dataArray, 4);
+    Sort<int>(_dataArray, 3);
+    Sort<int>(_dataArray, 2);
+    Sort<int>(_dataArray, 1);
+    Sort<int>(_dataArray, 0);
+}
+void GetComb3()
+{
+    GetComb2();
+    var arr = 0;
+        for (var v = 0; v < 84; v++)
+        {            
+            if (v <= 27)
+        {
+            Array.Copy(_dataArray[arr], __dataArray[arr], 6);
+            Array.Sort(__dataArray[arr]);
+            arr++;
+        }
+        else
+        {  
+            for (var i = 0; i < 28; i++)
+            {
+                for (var j = 0; j < 6; j++)
+                {
+                    Array.Copy(__dataArray[i], c, 6);
+                    c.SetValue( num9, j );
+                    Array.Sort(c);
+                    for (var l = 0; l < 84; l++)
+                    {                        
+                        if (checkEquality(c, __dataArray[l]))                        
+                        {                                
+                                goto next;   
+                        }                    
+                    }        
+                    Array.Copy(c, __dataArray[arr], 6);  
+                    Array.Sort(__dataArray[arr]);
+                    arr++;
+                    next:;                        
+                }     
+            }                
+        }
+    }
+    Sort<int>(__dataArray, 5);
+    Sort<int>(__dataArray, 4);
+    Sort<int>(__dataArray, 3);
+    Sort<int>(__dataArray, 2);
+    Sort<int>(__dataArray, 1);
+    Sort<int>(__dataArray, 0);
+}
+
+int[] first = { 1, 2, 3, 4, 5 };
+Array.Sort(first);
+int[] second = { 5, 4, 3, 2, 1 };
+Array.Sort(second);
+
+int[][] data = new int[][] {
+new int[] {1,2,3,4},
+new int[] {2,3,4,4},
+new int[] {2,3,1,2}
+};
+
+Sort<int>(data, 3);
+Sort<int>(data, 2);
+Sort<int>(data, 1);
+Sort<int>(data, 0);
+
+void Sort<T>(T[][] data, int col) 
+{ 
+    Comparer<T> comparer = Comparer<T>.Default;
+    Array.Sort<T[]>(data, (x,y) => comparer.Compare(x[col],y[col])); 
+} 
+
+}
+
+
+<div class="text-center">
+
+    <h1 class="display-4">6/49</h1>    
+
+         <h3>les nombres</h3><br />
+
+         @for(int i=0; i<num.Length; i++)
+            {
+        
+               <b>@num[i]  </b><a> , </a>
+        
+            }<br />
+
+ <br />
+    
+    <h3>Combinaisons a 7 Chiffres</h3>
+ <br />
+ @for(int i=0; i<dataArray.Length; i++)
+{
+        for (int j = 0; j < (dataArray[i]).Length; j++)
+
+        {
+            <b>@dataArray[i][j]  </b> 
+        }
+<br />
+}
+
+ <br />
+    
+    <h3>Combinaisons a 8 Chiffres</h3>
+<br />
+@for(int i=0; i<_dataArray.Length; i++)
+{
+    for (int j = 0; j < (_dataArray[i]).Length; j++)
+
+    { 
+        <b>@_dataArray[i][j]  </b>
+    }
+    if (i == 4 || i == 9 || i == 14 || i == 19 || i == 24)
+    {
+        <br />
+    }
+    else
+    {
+        <a> ,</a>
+    }
+}<br />
+<br />
+
+    <h3>Combinaisons a 9 Chiffres</h3>
+
+    <br />
+@for(int i=0; i<__dataArray.Length; i++)
+{
+    for (int j = 0; j < (__dataArray[i]).Length; j++)
+
+    { 
+        <b>@__dataArray[i][j]  </b>
+    }
+    if (i == 4 || i == 9 || i == 14 || i == 19 || i == 24 || i == 29 || i == 34 || i == 39 || i == 44 || i == 49 || i == 54 || i == 59 || i == 64 || i == 69 || i == 74 ||  i == 79 || i == 84 || i == 89 || i == 94)
+    {
+        <br />
+    }
+    else
+    {
+        <a> ,</a>
+    }
+}<br />
+<br />
+
+<h3>sorted Jagged</h3>
+    
+    @foreach (int[] row in data)
+    {
+    foreach (int cell in row)
+    {
+    @cell
+
+    }<br />
+    
+    }<br />
+
+ <h3>checkEquality</h3>
+
+        @if (checkEquality(first, second)) {
+            
+            <b>Both arrays are equal </b>
+        }
+        else {
+            
+            <b>Both arrays are not equal </b>
+        }
+
+</div>
